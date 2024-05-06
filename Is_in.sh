@@ -1,7 +1,6 @@
 #!/bin/bash
 
-target_in_circle() {
- # Аргументы: (x,y) - координаты цели, (cx,cy) - координаты центра окружности, r - радиус обнаружения
+target_in_circle() { # Аргументы: (x,y) - координаты цели, (cx,cy) - координаты центра окружности, r - радиус обнаружения
  local x=$1
  local y=$2
  local cx=$3
@@ -30,8 +29,8 @@ distance() {
 
 target_in_sector() {
  # Аргументы: (x,y) - координаты цели, (cx,cy) - координаты центра окружности, r - радиус обнаружения, 
- # alpha - начальный угол, beta - конечный угол
- # смотрим пространство между углами alpha и beta
+ # alpha - начальный угол, beta - конечный угол.
+ # Смотрим пространство между углами alpha и beta
     local x=$1
     local y=$2
     local cx=$3
@@ -54,13 +53,10 @@ target_in_sector() {
     local res=0
     if [ "$incircle" -eq 1 ] && (( $(echo "$theta >= $alpha && $theta <= $beta" | bc -l) )); then
         res=1
-    #в идеале написать логику, что если alpha>beta, то и то что представлено ниже
     elif [ "$incircle" -eq 1 ] && [ "$alpha" -eq 345 ] && ((( $(echo "$theta >= $alpha && $theta < 360" | bc -l) )) || (( $(echo "0 < $theta && $theta < $beta" | bc -l) ))); then
         res=1
     fi
 
-    #echo "$incircle"
-    #echo "$theta"
     echo "$res"
 }
 
@@ -88,8 +84,7 @@ is_line_through_circle() {
     # Вычисляем расстояние от центра окружности до прямой.
     local distance_to_line=$(echo "(${A}*${center_x} + ${B}*${center_y} + ${C}) / sqrt(${A}^2 + ${B}^2)" | bc -l)
 
-    # Проверяем условие: если расстояние до прямой меньше или равно радиусу,
-    # то прямая проходит через окружность.
+    # Если расстояние до прямой меньше или равно радиусу, то прямая проходит через окружность.
     if (( $(echo "${distance_to_line} <= ${radius}" | bc -l) )); then
         echo "true"
     else
